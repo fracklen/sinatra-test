@@ -9,10 +9,16 @@ get '/health' do
 end
 
 get '/load' do
-  10000.times do |i|
-    1000.downto(1) do |j|
-      Math.sqrt(j) * i / 0.2
+  open('/data/file', 'a') do |f|
+    1000.times do |i|
+      1000.downto(1) do |j|
+        f.puts("#{Math.sqrt(j) * i / 0.2}\n")
+      end
     end
   end
   [200, {}, "OK"]
+end
+
+get '/download' do
+  [200, {}, File.read('/data/file')]
 end
